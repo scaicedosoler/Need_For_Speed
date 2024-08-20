@@ -44,14 +44,17 @@ par_10=smm.par;dmom_10=dmom;smm_10=smm;
 run_eq=0;
 
 if run_eq==1
+    
+    par=par_80; % par_80 ; par_90 ; par_10
+
     %Run equilibrium
     disp('-----------------------------------------------------------')
     disp('Model:Internal with scaling and additional benefit')
     disp('----------------------------------------------------------')
-    eq=eq_sim_fun_intq_B(par_80); % par_80 ; par_90 ; par_10
+    eq=eq_sim_fun_intq_B(par);
 
     %Table of variables
-    tab_fun(par_80,eq) % par_80 ; par_90 ; par_10
+    tab_fun(par,eq) 
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
