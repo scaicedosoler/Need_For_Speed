@@ -35,7 +35,7 @@ warning('off')
 %% Upload data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-dir= '/Users/nicolasfajardo/Dropbox/Caicedo_Pearce/RA - Nicolas/tasks/Task 28 - Model and Matlab Code/Quality_Quantity/data/'; %'..\data\'; %'D:\Dropbox\santiago\Research\Caicedo_Pearce\RA - Nicolas\tasks\Task 15 - Moments for Exogenous Types with Multiple Skills\'; %'..\data\'; 
+dir='..\data\'; % '/Users/nicolasfajardo/Dropbox/Caicedo_Pearce/RA - Nicolas/tasks/Task 28 - Model and Matlab Code/Quality_Quantity/data/'; %'D:\Dropbox\santiago\Research\Caicedo_Pearce\RA - Nicolas\tasks\Task 15 - Moments for Exogenous Types with Multiple Skills\'; %'..\data\'; 
 
 filename =[dir 'mom_data' save_str '.xlsx']; % [dir 'mom_data_SC.xlsx']; %[dir 'data_mom_example.xlsx'];
 
@@ -59,12 +59,12 @@ data.inv_ext_hs_90=data.inv_ext_hs-data.inv_ext_hs_10;
 %----------------------------------------
 %Create structure with moments to match
 %----------------------------------------
-dy=4;    %Number of years for average
+dy=5;    %Number of years for average
 
 %Base year for comparison moments
 indb=find(data.year>=1980 & data.year<=1980+dy);
 
-for iy=1978:dy:(2014-dy)
+for iy=1975:dy:2010
 
     ind=find(data.year>=iy & data.year<=iy+dy);
 
