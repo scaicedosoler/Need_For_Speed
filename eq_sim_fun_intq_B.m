@@ -143,6 +143,12 @@ if strcmp(sol_opt,'fm_con')
 
 end
 
+%Other variables
+
+%Value function components
+eq.piq=par.chi*eq.A*par.lambda*eq.Clx^par.alpha_x*eq.Clq^par.alpha_q*(1-par.alpha_x-par.alpha_q);
+eq.pib=par.chi*par.chi_b*eq.Clx^par.alpha_x*(1-par.alpha_x);
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Simulations
