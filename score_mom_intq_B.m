@@ -175,6 +175,21 @@ end
 
 end
 
+if strcmp(par.par_est,'par_chib_50')
+
+%Initial parameters
+par.lambda=parv(1);
+par.chi_e=parv(2);
+par.lambda_e=parv(3);
+par.alpha_e=parv(4);
+par.gamma_q=parv(5);
+par.chi=parv(6);
+par.nu=parv(7);
+par.L_I=parv(8);
+par.chi_b=parv(9);
+
+end
+
 %Adjust parametric restrictions
 par.gamma_x=1-par.alpha_x-par.alpha_q-par.gamma_q;
 par.bargamma_x=par.alpha_x+par.alpha_q-par.bargamma_q;
@@ -257,6 +272,9 @@ end
 
 mom.rb_pat_val_sales=mom.pat_val_sales/par.pat_val_sales_b;
 
+%17. Additional benefit over total profits
+mom.pib_pi_tot=eq.pib/(eq.pi+eq.pib+eq.piq);
+
 %% Score function
 
 f=zeros(1,par.nmom);
@@ -277,6 +295,7 @@ f(13)=(mom.rb_xi_lq-dmom.rb_xi_lq)^2/(0.5*(mom.rb_xi_lq)^2+0.5*dmom.rb_xi_lq^2);
 f(14)=(mom.rb_inv_pat-dmom.rb_inv_pat)^2/(0.5*(mom.rb_inv_pat)^2+0.5*dmom.rb_inv_pat^2);
 f(15)=(mom.pat_val_sales-dmom.pat_val_sales)^2/(0.5*(mom.pat_val_sales)^2+0.5*dmom.pat_val_sales^2);
 f(16)=(mom.rb_pat_val_sales-dmom.rb_pat_val_sales)^2/(0.5*(mom.rb_pat_val_sales)^2+0.5*dmom.rb_pat_val_sales^2);
+f(17)=(mom.pib_pi_tot-dmom.pib_pi_tot)^2/(0.5*(mom.pib_pi_tot)^2+0.5*dmom.pib_pi_tot^2);
 
 %Adjust units
 f=sqrt(f);

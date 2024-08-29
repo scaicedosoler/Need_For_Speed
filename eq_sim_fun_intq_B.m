@@ -352,16 +352,36 @@ if run_sim==1
         eq.mom.q_10_90=eq.q_top_bot;
 
         %8. Patents relative to baseline
-        eq.mom.pat_rb=eq.xbar/par.xbarb;
+        eq.mom.pat_f_rb=eq.xbar/par.xbarb;
 
-        %9. Proportion of entry: top10 relative to bot90  
+        %9. Proportion of entry: top10 relative to bot90
         eq.mom.ent_10_90=(eq.xe_top/eq.x_top)/(eq.xe_bot/eq.x_bot);
 
-        %10. Average private value of innovations: (V/x top10)/(V/x bot 90) 
+        %10. Average private value of innovations: (V/x top10)/(V/x bot 90)
+        %mom.xi_10_90=(eq.V_top/eq.x_top)/(eq.V_bot/eq.x_bot);
         eq.mom.xi_10_90=eq.V_top/eq.V_bot;
 
         %11. Ratio: private value/ patent quality relative to baseline
-        eq.mom.r_lxi_lq=(eq.Vbar/eq.dq)/par.V_dq_b;
+        eq.mom.rb_lxi_lq=(eq.Vbar/eq.dq)/par.V_dq_b;
+
+        %12. Patents per inventor
+        eq.mom.x_l=(eq.x+eq.xe)/par.L_I;
+
+        %13. Ratio: private value/ patent quality relative to baseline
+        eq.mom.rb_xi_lq=(eq.Vbar/eq.dq)/par.V_dq_b;
+
+        %14. Inventors per patent relative to baseline
+        eq.mom.rb_inv_pat=(par.L_I/(eq.x+eq.xe))/par.inv_pat_b;
+
+        %15. Patent value over sale
+        eq.mom.pat_val_sales=(eq.x*(eq.A*eq.dq+par.chi_b)/(eq.r+eq.tau))/eq.yj;
+
+        %16. Change in Patent value over sale relative to baseline
+        if par.iyear==1980
+            par.pat_val_sales_b=eq.mom.pat_val_sales;
+        end
+        
+        eq.mom.rb_pat_val_sales=eq.mom.pat_val_sales/par.pat_val_sales_b;
 
         
     %----------------------------------------------------------------------

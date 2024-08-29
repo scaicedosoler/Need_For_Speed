@@ -1,7 +1,7 @@
 % Need for Speed
 % Caicedo-Pearce
 % Moments fit
-% Spring 2024
+% Summer 2024
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Housekeeping
@@ -35,11 +35,11 @@ str_mod='_intq_B';
 save_str='_ipc3';
 
 %Choose parameters to estimate
-%par_est='par_chib0';
+par_est='par_chib_50';
 
 %Baseline estimation
 update_baseline=1;
-base_est='sol_ps_1990_1995_ipc3_intq_B_macro_dbase_par_chib0.mat'; %'sol_ps_1980_1995_ipc3_intq_B_macro_dbase_par_chib0.mat' ; 'sol_ps_1990_1995_ipc3_intq_B_macro_dbase_par_chib0.mat' ; 'sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib0.mat'
+base_est='sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat'; 
 
 %Other calibration options
 L_I_cal=0; %Change the calibrated L_I to the one measured in Compustat
@@ -52,7 +52,7 @@ rb_pat_val_sales_macro=1; % patent value over sales in the data computed from ma
 
 %Choose period to estimate
 iyear=1980; %1990; %1980; %2010
-fyear=iyear+4;
+fyear=iyear+5;
 
 %Load initial parameters
 par=par0_fun(par);
@@ -60,39 +60,26 @@ par.tol=1e-5;
 
 load(['data_mom' save_str '_' num2str(iyear) '_' num2str(fyear) '.mat'],'dmom')
 
-%Save starting point for computing the equilibrium
-%par.opt.save_var0=1;
 
-%Normalizations
-par.Lp=1;
-par.varrho=0.9;
-par.qbar=1;
+% load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
+% 
+% par=smm.par;
+% eq=smm.eq;
+% 
+% 
+% %Modify Parameters
+% 
+% par.chi_b=12.1; %to match 50% pib/pi_tot
+% par.chi=0.057; % To get x_l
+% par.lambda=1.39; %level of growth
+% par.chi_e=0.0234; % level of pat_ent
+% par.alpha_e=0.41; % Relative inv_ent vs pat_ent, also changes with chi_b
+% par.lambda_e=0.65; %q_ent_inc
+% par.nu=0.4; %Increase concentration
+% par.gamma_q=-0.0595; %q_10_90
 
-par.chi=1;
-par.bargamma_q=0;
-par.bargamma_e=0;
-
-%Additional assumptions
-par.chi_b=0;
-
-%Calibrations
-par.rho=0.02;
-
-%Directly inferred
-par.beta=dmom.prof_AK; %1/(dmom.prof+1);
-
-%Estimation outside the model 
-par.alpha_x=0.3;
-par.alpha_q=0.1;
-
-%Percentage of inventors relative to production workers
-par.L_I=0.01; %Arbitrary
-
-%Initial parameters
-load('sol_ps_1990_1995_ipc3_intq_B_macro_dbase_par_chib0.mat')
-
-par=smm.par;
-eq=smm.eq;
+%Best so far
+load('min_score_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
 
 %Update baseline
 if update_baseline==1
@@ -122,7 +109,7 @@ par.iyear=iyear;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Load baseline
-iyearb=1980; fyearb=1984;
+iyearb=1980; fyearb=1985;
 
 load(['data_mom' save_str '_' num2str(iyearb) '_' num2str(fyearb) '.mat'])
 
@@ -136,6 +123,8 @@ dmom.rb_lxi_lq=dmom.lxi_lf_cit3_res/dmomb.lxi_lf_cit3_res;
 dmom.rb_xi_lq=dmom.xi_lf_cit3_res/dmomb.xi_lf_cit3_res;
 dmom.rb_inv_pat=dmom.inv_pat/dmomb.inv_pat;
 dmom.rb_pat_val_sales=dmom.pat_val_sales/dmomb.pat_val_sales;
+
+dmom.pib_pi_tot=0.5; %Additional benefit is 50% of total profits
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Other calibration options
@@ -190,12 +179,17 @@ par0v(6)=par.chi;
 par0v(7)=par.nu;
 par0v(8)=par.L_I;
 
+if strcmp(par_est,'par_chib_50')
+    %Let chi_b change
+    par0v(9)=par.chi_b;
+end
+
 if iyear==1980
     %par.alpha_q=0.085;
     par.alpha_q=0.077;
     par.alpha_x=0.31;
-    %Normalize chi_b=0
-    par.chi_b=0;
+    % %Normalize chi_b=0
+    % par.chi_b=0;
 end
 
 
@@ -214,6 +208,8 @@ if iyear==2010
     %Let chi_b change
     par0v(9)=par.chi_b;
 end
+
+
 
 par.iyear=iyear;
 
@@ -236,10 +232,10 @@ ub(6)=10;
 ub(8)=0.1;
 
 %Save in structure
-par.par_est='par_chib0';
+par.par_est=par_est;
 
 %Save for string
-par_str='_par_chib0';
+par_str=['_' par_est];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Simulated Method of Moments
@@ -252,13 +248,13 @@ str_mod=[str_mod '_dbase']; % '_xrb_rb_xi_lq'; %'_alphas_h_chi_b'; %'_xrb_chib0'
 run_alg='ps'; %'f'; %'psw'; %'sa'; % 'gs'; % 'ga'; % 
 
 %Saving options
-par.opt.save_str=[ run_alg '_' num2str(iyear) '_' num2str(fyear)  save_str str_mod '_par_chib0'];
+par.opt.save_str=[ run_alg '_' num2str(iyear) '_' num2str(fyear)  save_str str_mod par_str];
 
 %Save minimum score
 par.opt.save_score=1;
 
 %Moments weights: 
-par.nmom=16;
+par.nmom=17;
 par.wmom=ones(1,par.nmom);
 
 %No weights
@@ -270,6 +266,7 @@ par.wmom(11)=0;
 par.wmom(13)=0;
 par.wmom(14)=0;
 par.wmom(15)=0;
+%par.wmom(17)=0;  
 
 %Base year: no target relative to baseline
 if iyear==1980
