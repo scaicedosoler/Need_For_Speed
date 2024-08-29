@@ -1,7 +1,7 @@
 % Need for Speed
 % Caicedo-Pearce
 % Moments from data
-% Spring 2024
+% Summer 2024
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Housekeeping
