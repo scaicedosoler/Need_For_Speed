@@ -1,2 +1,6 @@
 
 *.mat
+
+figures/
+
+mat/
