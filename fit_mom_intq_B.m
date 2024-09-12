@@ -39,7 +39,7 @@ par_est='par_chib_50';
 
 %Baseline estimation
 update_baseline=1;
-base_est='sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat'; 
+base_est='sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat'; 
 
 %Other calibration options
 L_I_cal=0; %Change the calibrated L_I to the one measured in Compustat
@@ -51,7 +51,7 @@ rb_pat_val_sales_macro=1; % patent value over sales in the data computed from ma
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Choose period to estimate
-iyear=1980; %1990; %1980; %2010
+iyear=2010; %1980; %1990; %1980; %
 fyear=iyear+5;
 
 %Load initial parameters
@@ -78,8 +78,39 @@ load(['data_mom' save_str '_' num2str(iyear) '_' num2str(fyear) '.mat'],'dmom')
 % par.nu=0.4; %Increase concentration
 % par.gamma_q=-0.0595; %q_10_90
 
-%Best so far
-load('min_score_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
+% %Best so far
+% load('min_score_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
+
+% %-----------------------------------------------------
+% % EC: Aug 2024--50% additional benefits 2010
+% %-----------------------------------------------------
+% 
+% load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
+% 
+% par=smm.par;
+% eq=smm.eq;
+% 
+% par.iyear=2010; 
+% 
+% 
+% %Modify Parameters
+% 
+% par.chi_b=24; %to match rb_pat_val_sales
+% par.chi=0.072; % To get pat_f_rb
+% par.L_I=0.044; % x_l 
+% par.lambda=0.72; %level of growth
+% par.chi_e=0.01; % level of pat_ent
+% par.alpha_e=0.3; % Relative inv_ent vs pat_ent, also changes with chi_b
+% par.lambda_e=0.46; %q_ent_inc
+% par.nu=0.62; %Increase concentration
+% par.gamma_q=-0.085; %q_10_90
+
+%-----------------------------------------------------
+% EC: Aug 2024--50% additional benefits 2010
+%-----------------------------------------------------
+
+load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
+
 
 %Update baseline
 if update_baseline==1
@@ -266,7 +297,7 @@ par.wmom(11)=0;
 par.wmom(13)=0;
 par.wmom(14)=0;
 par.wmom(15)=0;
-%par.wmom(17)=0;  
+par.wmom(17)=0;  
 
 %Base year: no target relative to baseline
 if iyear==1980
@@ -275,6 +306,7 @@ if iyear==1980
     par.wmom(13)=0; %No rb_xi_lq
     par.wmom(14)=0; %No rb_inv_pat
     par.wmom(16)=0; %No rb_pat_val_sales_macro
+    par.wmom(17)=1; %50 % target
 end
 
 %Test function
@@ -338,6 +370,23 @@ end
 %Save best solution
 [smm.f,smm.par,smm.eq,smm.mom]=score_mom_intq_B(smm.parv_sol,dmom,par);
 smm.iyear=iyear;
+
+%Update baseline
+if update_baseline==1
+
+    %Save xbar of baseline as a parameter
+    par.xbarb=smm.eq.xbar;
+
+    %Save V relative to quality of baseline as a parameter
+    par.V_dq_b=(smm.eq.Vbar/smm.eq.dq);
+
+    %Save V relative to quality of baseline as a parameter
+    par.inv_pat_b=(smm.par.L_I/(smm.eq.x+smm.eq.xe));
+
+    %16. Change in Patent value over sale relative to baseline
+    par.pat_val_sales_b=smm.eq.mom.pat_val_sales;
+
+end
 
 %Saving solution
 save([par.opt.dir_mat 'sol_' par.opt.save_str '.mat' ],"smm","dmom") ;
