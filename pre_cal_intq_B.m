@@ -29,30 +29,60 @@ par.opt.save_tab=0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% 1. Additional benefit equal to 50% of profits
-
-%% EC: Aug 2024--50% additional benefits
 clc; clear all; close all;
 
-load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
+%-----------------------------------------------------
+% EC: Aug 2024--50% additional benefits 1980
+%-----------------------------------------------------
+
+% load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
+% 
+% par=smm.par;
+% eq=smm.eq;
+% 
+% par.iyear=1980; 
+% 
+% 
+% %Modify Parameters
+% 
+% par.chi_b=12.1; %to match 50% pib/pi_tot
+% par.chi=0.057; % To get x_l
+% par.lambda=1.39; %level of growth
+% par.chi_e=0.0234; % level of pat_ent
+% par.alpha_e=0.41; % Relative inv_ent vs pat_ent, also changes with chi_b
+% par.lambda_e=0.65; %q_ent_inc
+% par.nu=0.4; %Increase concentration
+% par.gamma_q=-0.0595; %q_10_90
+% 
+% %par.L_I=0.035; % x_l 
+% 
+% %Load baseline
+% iyearb=1980; % 2010; %
+% fyearb=iyearb+5;
+
+%-----------------------------------------------------
+% EC: Aug 2024--50% additional benefits 2010
+%-----------------------------------------------------
+
+load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
 
 par=smm.par;
 eq=smm.eq;
 
-par.iyear=1980; 
+par.iyear=2010; 
 
 
 %Modify Parameters
 
-par.chi_b=12.1; %to match 50% pib/pi_tot
-par.chi=0.057; % To get x_l
-par.lambda=1.39; %level of growth
-par.chi_e=0.0234; % level of pat_ent
-par.alpha_e=0.41; % Relative inv_ent vs pat_ent, also changes with chi_b
-par.lambda_e=0.65; %q_ent_inc
-par.nu=0.4; %Increase concentration
-par.gamma_q=-0.0595; %q_10_90
-
-%par.L_I=0.035; % x_l 
+par.chi_b=24; %to match rb_pat_val_sales
+par.chi=0.072; % To get pat_f_rb
+par.L_I=0.044; % x_l 
+par.lambda=0.72; %level of growth
+par.chi_e=0.01; % level of pat_ent
+par.alpha_e=0.3; % Relative inv_ent vs pat_ent, also changes with chi_b
+par.lambda_e=0.46; %q_ent_inc
+par.nu=0.62; %Increase concentration
+par.gamma_q=-0.085; %q_10_90
 
 %Load baseline
 iyearb=1980; % 2010; %
@@ -110,10 +140,14 @@ dmomt.rb_pat_val_sales_macro=dmom.rb_pat_val_sales;
  'q_10_90',mom.q_10_90,dmom.q_10_90;
  'pat_f_rb',mom.pat_f_rb,dmom.pat_f_rb;
  'x_l',mom.x_l,dmom.x_l;
+ 'rb_pat_val_sales', mom.rb_pat_val_sales, dmom.rb_pat_val_sales
  }
 
-%Additional benefits for profits
-eq1.pib/(eq1.pi+eq1.pib+eq1.piq)
+%Additional benefits for profits (in 1980)
+
+if par.iyear==1980
+    eq1.pib/(eq1.pi+eq1.pib+eq1.piq)
+end
 
 
 
