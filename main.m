@@ -2,7 +2,7 @@
 % Caicedo-Pearce
 % Internal with scaling and additional benefit
 % Main: Tables and Figures
-% Summer 2024
+% Fall 2024
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Housekeeping
@@ -139,14 +139,54 @@ cf_nq_fun_intq_B(smm)
 % disp('---------------------------------------------')
 % cf_nq_fun_intq_B(smm)
 
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Figure 9: Counterfactual External Effects of Speed
+%% Robustness Initial Additional Benefit 50% of Profits
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clc,clear all, close all;
+
+% Load parameters
+load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
+par_50_80=smm.par;dmom_50_80=dmom;smm_50_80=smm;eq_50_80=smm.eq;
+
+load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib_50.mat')
+par_50_10=smm.par;dmom_50_10=dmom;smm_50_10=smm;eq_50_10=smm.eq;
+
+tab_fit_cmp_intq_B(dmom_50_80,smm_50_80,dmom_50_10,smm_50_10)
+
+
+par_50_10.opt.save_fig=1;
+par_50_10.save_str='_50';
+cf_lab_intq_B(par_50_10,eq_50_10,par_50_80,eq_50_80)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Counterfactual changing alpha_x and alpha_q 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clc;clear all; close all
+
+% Load parameters
+load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
+par_80=smm.par;dmom_80=dmom;smm_80=smm;eq_80=smm_80.eq;
+
+load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib0.mat')
+par_10=smm.par;dmom_10=dmom;smm_10=smm;eq_10=smm_10.eq;
+
+par_10.opt.save_fig=1;
+cf_alpha_q_alpha_x(par_10,eq_10,par_80,eq_80)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Counterfactual External Effects of Speed
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clc;clear all; close all
+
 load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib0.mat')
 par=smm.par;
 
 %Save option
-par.opt.save_fig=0;
+par.opt.save_fig=1;
 
 %Computes the counterfactual of parameters depending on x
 disp('---------------------------------------------')
@@ -154,10 +194,24 @@ disp('Counterfactual: Parameters depending on x')
 disp('---------------------------------------------')
 cf_par_x_fun_intq_B(par)
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Figure XX: Counterfactual 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%TBC
+%% Model Validation: Untargeted moments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+clc; clear all; close all;
+
+% Load parameters
+load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
+par_80=smm.par;dmom_80=dmom;smm_80=smm;eq_80=smm_80.eq;
+
+load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib0.mat')
+par_10=smm.par;dmom_10=dmom;smm_10=smm;eq_10=smm_10.eq;
+
+%Plost for untargeted moments
+par_80.opt.save_fig=1;
+
+untarget_mom_intq_B(par_80,eq_80,par_10,eq_10)
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Additional Exercises: Counterfactual: Optimal Growth
