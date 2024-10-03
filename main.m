@@ -92,8 +92,19 @@ tab_fit_cmp_intq_B(dmom_80,smm_80,dmom_90,smm_90)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Figure 7: Counterfactual Changing Speed/Quality Labor
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-par_10.opt.save_fig=0;
+% Load parameters
+load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
+par_80=smm.par;dmom_80=dmom;smm_80=smm;eq_80=smm_80.eq;
+
+load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib0.mat')
+par_10=smm.par;dmom_10=dmom;smm_10=smm;eq_10=smm_10.eq;
+
 cf_lab_intq_B(par_10,eq_10,par_80,eq_80)
+
+
+%Test
+par_10.opt.save_fig=0;
+cf_lab_x_intq_B(par_10,eq_10,par_80,eq_80)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Figure 8: Endogenous vs. Fixed Quality (1980-1985)
@@ -180,19 +191,43 @@ cf_alpha_q_alpha_x(par_10,eq_10,par_80,eq_80)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Counterfactual External Effects of Speed
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clc;clear all; close all
+clc; clear all; close all
 
-load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib0.mat')
+load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
+%load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib0.mat')
 par=smm.par;
 
 %Save option
 par.opt.save_fig=1;
 
+% %Computes the counterfactual of parameters depending on x
+% disp('---------------------------------------------')
+% disp('Counterfactual: Parameters depending on x')
+% disp('---------------------------------------------')
+% cf_par_x_fun_intq_B(par)
+
 %Computes the counterfactual of parameters depending on x
 disp('---------------------------------------------')
-disp('Counterfactual: Parameters depending on x')
+disp('Counterfactual: Parameters depending on x, version 2')
 disp('---------------------------------------------')
-cf_par_x_fun_intq_B(par)
+cf_par_x_fun_v2_intq_B(par)
+
+
+%Computes the counterfactual of parameters depending on x
+disp('---------------------------------------------')
+disp('Counterfactual: Quality depending on x, growth effects')
+disp('---------------------------------------------')
+%Computes counterfactual growth for parameters
+% Load parameters
+load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
+par_80=smm.par;dmom_80=dmom;smm_80=smm;eq_80=smm_80.eq;
+
+load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib0.mat')
+par_10=smm.par;dmom_10=dmom;smm_10=smm;eq_10=smm_10.eq;
+
+par_10.opt.save_fig=1;
+cf_lab_x_intq_B(par_10,eq_10,par_80,eq_80)
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
