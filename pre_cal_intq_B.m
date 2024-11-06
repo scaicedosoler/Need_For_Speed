@@ -60,8 +60,32 @@ clc; clear all; close all;
 % iyearb=1980; % 2010; %
 % fyearb=iyearb+5;
 
+% %-----------------------------------------------------
+% % EC: Aug 2024--50% additional benefits 2010
+% %-----------------------------------------------------
+% 
+% load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
+% 
+% par=smm.par;
+% eq=smm.eq;
+% 
+% par.iyear=2010; 
+% 
+% 
+% %Modify Parameters
+% 
+% par.chi_b=24; %to match rb_pat_val_sales
+% par.chi=0.072; % To get pat_f_rb
+% par.L_I=0.044; % x_l 
+% par.lambda=0.72; %level of growth
+% par.chi_e=0.01; % level of pat_ent
+% par.alpha_e=0.3; % Relative inv_ent vs pat_ent, also changes with chi_b
+% par.lambda_e=0.46; %q_ent_inc
+% par.nu=0.62; %Increase concentration
+% par.gamma_q=-0.085; %q_10_90
+
 %-----------------------------------------------------
-% EC: Aug 2024--50% additional benefits 2010
+% EC: Oct 2024--Change in alpha_x and alpha_q
 %-----------------------------------------------------
 
 load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
