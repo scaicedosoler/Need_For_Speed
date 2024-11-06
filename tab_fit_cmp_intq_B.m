@@ -18,7 +18,7 @@ save_tab=0;
 par0=smm0.par;
 par1=smm1.par;
 
-input.tableCaption='Parameters';
+input.tableCaption='Estimated Parameters';
 input.tableLabel='par';
 
 

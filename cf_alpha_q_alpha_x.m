@@ -17,7 +17,7 @@ npar=3;
 % alpha_xv=sort([linspace(0.1,0.6,npar),par.alpha_x]);
 
 alpha_qv=[par.alpha_q,0.01,0.31,0.6,];
-alpha_xv=[par.alpha_x,0.01,0.077,0.6,];
+alpha_xv=[par.alpha_x,0.01,0.08,0.6,];
 
 npar=length(alpha_qv);
 
@@ -198,7 +198,7 @@ for ipar=1:npar
 
     if plot_max==1
         plxg=lxg/par.L_I;
-        smax=scatter(plxg(indmax),100*gag(indmax),80);  smax.Marker='pentagram'; smax.MarkerFaceColor='w'; smax.MarkerEdgeColor=pcolorc{ipar};
+        smax=scatter(plxg(indmax),100*gag(indmax),80);  smax.Marker='pentagram'; smax.MarkerFaceColor=pcolorc{ipar}; smax.MarkerEdgeColor=pcolorc{ipar};
     end
 
 
@@ -390,7 +390,7 @@ for ipar=1:npar
 
     if plot_max==1
         plxg=lxg/par.L_I;
-        smax=scatter(plxg(indmax),100*gag(indmax),80);  smax.Marker='pentagram'; smax.MarkerFaceColor='w'; smax.MarkerEdgeColor=pcolorc{ipar};
+        smax=scatter(plxg(indmax),100*gag(indmax),80);  smax.Marker='pentagram'; smax.MarkerFaceColor=pcolorc{ipar}; smax.MarkerEdgeColor=pcolorc{ipar};
     end
 
     %Legends
