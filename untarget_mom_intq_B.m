@@ -28,6 +28,10 @@ DV1_0=dV1-dV0;
 
 %% Plots
 
+plot_event=0;
+
+if plot_event==1
+
 %Number of periods
 tg=[-3,-2,-1,0,1,2,3];
 ng=length(tg);
@@ -161,25 +165,40 @@ if par.use_data==1
     xlabel('Periods'); ylabel('Log Value');
     legend('off')
 
+end
+
+end
 
     %% Triple diff
 
+    dir='..\data\'; % '/Users/nicolasfajardo/Dropbox/Caicedo_Pearce/RA - Nicolas/tasks/Task 28 - Model and Matlab Code/Quality_Quantity/data/'; %'D:\Dropbox\santiago\Research\Caicedo_Pearce\RA - Nicolas\tasks\Task 15 - Moments for Exogenous Types with Multiple Skills\'; %'..\data\'; 
+
+    filename =[dir 'un_mom_data.xlsx']; % [dir 'mom_data_SC.xlsx']; %[dir 'data_mom_example.xlsx'];
+
+    %Create data structure
+    data_wofc = readtable(filename,'Range','A1:D5'); %Without firm controls
+    data_wfc = readtable(filename,'Range','A8:D12'); %With firm controls
+
+    %Choose data
+    data=data_wfc; %data_fc; %
+
+
     % From regressions in movers_out_of_sample_draft8.do
-    dx_d01=.485327;
-    dx_min95_01=.3385149;
-    dx_max95_01=.6321391;
+    dQ_d01=data.estimate(1);
+    dQ_min95_01=data.min95(1);
+    dQ_max95_01=data.max95(1);
 
-    dxl_d01=-.1908427;
-    dxl_min95_01=-.3550386;
-    dxl_max95_01=-.0266468;
+    dx_d01=data.estimate(2);
+    dx_min95_01=data.min95(2);
+    dx_max95_01=data.max95(2);
 
-    dQ_d01=-.205482;
-    dQ_min95_01=-.2805382;
-    dQ_max95_01=-.1304258;
+    dxl_d01=data.estimate(3);
+    dxl_min95_01=data.min95(3);
+    dxl_max95_01=data.max95(3);
 
-    dV_d01=-.0135524;
-    dV_min95_01=-.3219797;
-    dV_max95_01=.2948749;
+    dV_d01=data.estimate(4);
+    dV_min95_01=data.min95(4);
+    dV_max95_01=data.max95(4);
 
 
     %Triple Diff
@@ -196,40 +215,42 @@ if par.use_data==1
     ylabel('Move $\times$  (Small $\to$ Large) $\times ~I_{2010-2015}$')
     lgd=legend([s,sd], {'Model','Data'}); lgd.Box="off";
 
-    %Arrival rate, quality and value
-    fig_TD_x_Q_V=figure; hold all;
-    px=plot([1,1], [dx_min95_01, dx_max95_01]); px.Color=par.opt.light_blue;
-    pQ=plot([2,2], [dQ_min95_01, dQ_max95_01]); pQ.Color=par.opt.light_blue;
-    pV=plot([3,3], [dV_min95_01, dV_max95_01]); pV.Color=par.opt.light_blue;
-    sd=scatter(1:3, [dx_d01, dQ_d01,dV_d01]); sd.Marker="o"; sd.MarkerFaceColor=par.opt.light_blue; sd.MarkerEdgeColor=par.opt.light_blue;
-    s=scatter(1:3, [Dx1_0, DQ1_0,DV1_0]); s.Marker="diamond"; s.MarkerFaceColor="w"; s.MarkerEdgeColor=par.opt.maroon;
-    plot([0,4], [0,0],":k")
-    xticks(1:4); xticklabels({'Arrival Rate','Quality','Value'})
-    ylabel('Move $\times$ (Small $\to$ Large) $\times ~I_{2010-2015}$')
-    lgd=legend([s,sd], {'Model','Data'}); lgd.Box="off";
 
-    %Arrival rate and quality
-    fig_TD_x_Q=figure; hold all;
-    px=plot([1,1], [dx_min95_01, dx_max95_01]); px.Color=par.opt.light_blue;
-    pQ=plot([2,2], [dQ_min95_01, dQ_max95_01]); pQ.Color=par.opt.light_blue;
-    sd=scatter(1:2, [dx_d01, dQ_d01]); sd.Marker="o"; sd.MarkerFaceColor=par.opt.light_blue; sd.MarkerEdgeColor=par.opt.light_blue;
-    s=scatter(1:2, [Dx1_0, DQ1_0]); s.Marker="diamond"; s.MarkerFaceColor="w"; s.MarkerEdgeColor=par.opt.maroon;
-    plot([0,3], [0,0],":k")
-    xticks(1:4); xticklabels({'Arrival Rate','Quality'})
-    ylabel('Move $\times$ (Small $\to$ Large)  $\times ~I_{2010-2015}$')
-    lgd=legend([s,sd], {'Model','Data'}); lgd.Box="off";
+    % %Arrival rate, quality and value
+    % fig_TD_x_Q_V=figure; hold all;
+    % px=plot([1,1], [dx_min95_01, dx_max95_01]); px.Color=par.opt.light_blue;
+    % pQ=plot([2,2], [dQ_min95_01, dQ_max95_01]); pQ.Color=par.opt.light_blue;
+    % pV=plot([3,3], [dV_min95_01, dV_max95_01]); pV.Color=par.opt.light_blue;
+    % sd=scatter(1:3, [dx_d01, dQ_d01,dV_d01]); sd.Marker="o"; sd.MarkerFaceColor=par.opt.light_blue; sd.MarkerEdgeColor=par.opt.light_blue;
+    % s=scatter(1:3, [Dx1_0, DQ1_0,DV1_0]); s.Marker="diamond"; s.MarkerFaceColor="w"; s.MarkerEdgeColor=par.opt.maroon;
+    % plot([0,4], [0,0],":k")
+    % xticks(1:4); xticklabels({'Arrival Rate','Quality','Value'})
+    % ylabel('Move $\times$ (Small $\to$ Large) $\times ~I_{2010-2015}$')
+    % lgd=legend([s,sd], {'Model','Data'}); lgd.Box="off";
+    % 
+    % %Arrival rate and quality
+    % fig_TD_x_Q=figure; hold all;
+    % px=plot([1,1], [dx_min95_01, dx_max95_01]); px.Color=par.opt.light_blue;
+    % pQ=plot([2,2], [dQ_min95_01, dQ_max95_01]); pQ.Color=par.opt.light_blue;
+    % sd=scatter(1:2, [dx_d01, dQ_d01]); sd.Marker="o"; sd.MarkerFaceColor=par.opt.light_blue; sd.MarkerEdgeColor=par.opt.light_blue;
+    % s=scatter(1:2, [Dx1_0, DQ1_0]); s.Marker="diamond"; s.MarkerFaceColor="w"; s.MarkerEdgeColor=par.opt.maroon;
+    % plot([0,3], [0,0],":k")
+    % xticks(1:4); xticklabels({'Arrival Rate','Quality'})
+    % ylabel('Move $\times$ (Small $\to$ Large)  $\times ~I_{2010-2015}$')
+    % lgd=legend([s,sd], {'Model','Data'}); lgd.Box="off";
+
+    if ~isfield(par,'save_str')
+        par.save_str='';
+    end
 
     if par.opt.save_fig==1
         exportgraphics(fig_TD_all,[par.opt.dir_fig 'TD_all_untarget_mom' par.save_str '.pdf'])
-        exportgraphics(fig_TD_x_Q_V,[par.opt.dir_fig 'TD_x_Q_V_untarget_mom' par.save_str '.pdf'])
-        exportgraphics(fig_TD_x_Q,[par.opt.dir_fig 'TD_x_Q_untarget_mom' par.save_str '.pdf'])
+        % exportgraphics(fig_TD_x_Q_V,[par.opt.dir_fig 'TD_x_Q_V_untarget_mom' par.save_str '.pdf'])
+        % exportgraphics(fig_TD_x_Q,[par.opt.dir_fig 'TD_x_Q_untarget_mom' par.save_str '.pdf'])
     end
 
 end
 
-
-
-end
 
 
 
