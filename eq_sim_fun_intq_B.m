@@ -69,7 +69,7 @@ if strcmp(sol_opt,'fs')
         disp('fsolve converged')
 
         %Equilibrium variables
-        [res,eq]=sys_eq_intq_B_nf(var,par);
+        [res,eq]=sys_eq_sim_intq_B(var,par);
 
         eq.res=res;
         eq.exitflag=exitflag;
@@ -225,10 +225,21 @@ if run_sim==1
     %----------------------------------------------------------------------
 
     %Compute the arrival rate distribution
+    qsim_bar=mean(eq.qsim);
+
     sim.xq=par.chi*eq.lx^par.alpha_x*eq.qsim.^(par.alpha_x+par.gamma_x)...
-        *mean(eq.qsim).^(par.bargamma_x-par.alpha_x);
+        *qsim_bar.^(par.bargamma_x-par.alpha_x);
     sim.Qq=par.lambda*eq.lq^par.alpha_q*eq.qsim.^(par.alpha_q+par.gamma_q)...
-        .*mean(eq.qsim).^(par.bargamma_q-par.alpha_q);
+        .*qsim_bar.^(par.bargamma_q-par.alpha_q);
+
+    %Compute labor
+    sim.xqa=par.chi*eq.lx^par.alpha_x*eq.qsim.^(par.alpha_x)...
+        *qsim_bar.^(par.bargamma_x-par.alpha_x);
+    sim.Qqa=par.lambda*eq.lq^par.alpha_q*eq.qsim.^(par.alpha_q)...
+        .*qsim_bar.^(par.bargamma_q-par.alpha_q);
+    sim.lx_q=eq.lx*(eq.qsim/qsim_bar);
+    sim.lq_q=eq.lq*(eq.qsim/qsim_bar);
+    sim.log_l=log(sim.lx_q+sim.lq_q);
 
     %Numerical adjustment of wages
     eq.w=eq.wq*(eq.Qbar/par.qbar);
@@ -383,6 +394,13 @@ if run_sim==1
         
         eq.mom.rb_pat_val_sales=eq.mom.pat_val_sales/par.pat_val_sales_b;
 
+        %17. Regressions: alpha_x and alpha_q
+        % reg_x=fitlm(diff(log(sim.lx_q)),diff(log(sim.xqa)));
+        % reg_q=fitlm(diff(log(sim.lq_q)),diff(log(sim.Qqa)));
+
+        % reg_x=fitlm(diff(sim.log_l),diff(log(sim.xqa)));
+        % reg_q=fitlm(diff(sim.log_l),diff(log(sim.Qqa)));
+        
         
     %----------------------------------------------------------------------
     %% Extended moments
