@@ -1,7 +1,7 @@
 % Need for Speed
 % Caicedo-Pearce
 % Moments fit
-% Summer 2024
+% Fall 2024
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Housekeeping
@@ -35,11 +35,11 @@ str_mod='_intq_B';
 save_str='_ipc3';
 
 %Choose parameters to estimate
-par_est='par_chib_50';
+par_est='par_chib_50'; %'par_chib0';% 
 
 %Baseline estimation
 update_baseline=1;
-base_est='sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat'; 
+base_est='sol_ps_1980_1985_ipc3_intq_B_macro_dbase_2d_alphas_par_chib_50.mat'; %'sol_ps_1980_1985_ipc3_intq_B_macro_dbase_2d_alphas_par_chib0'; % 'sol_ps_1980_1985_ipc3_intq_B_macro_dbase_rev_alphas_par_chib0'; %'sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat'; 
 
 %Other calibration options
 L_I_cal=0; %Change the calibrated L_I to the one measured in Compustat
@@ -51,7 +51,7 @@ rb_pat_val_sales_macro=1; % patent value over sales in the data computed from ma
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Choose period to estimate
-iyear=2010; %1980; %1990; %1980; %
+iyear=2010;%1980; %1990; %
 fyear=iyear+5;
 
 %Load initial parameters
@@ -61,56 +61,15 @@ par.tol=1e-5;
 load(['data_mom' save_str '_' num2str(iyear) '_' num2str(fyear) '.mat'],'dmom')
 
 
-% load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
-% 
-% par=smm.par;
-% eq=smm.eq;
-% 
-% 
-% %Modify Parameters
-% 
-% par.chi_b=12.1; %to match 50% pib/pi_tot
-% par.chi=0.057; % To get x_l
-% par.lambda=1.39; %level of growth
-% par.chi_e=0.0234; % level of pat_ent
-% par.alpha_e=0.41; % Relative inv_ent vs pat_ent, also changes with chi_b
-% par.lambda_e=0.65; %q_ent_inc
-% par.nu=0.4; %Increase concentration
-% par.gamma_q=-0.0595; %q_10_90
+%load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib0.mat')
+%load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib0.mat')
+%load('sol_ps_1990_1995_ipc3_intq_B_macro_dbase_par_chib0.mat')
 
-% %Best so far
-% load('min_score_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
+%load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
+load('sol_ps_2010_2015_ipc3_intq_B_macro_dbase_par_chib_50.mat')
 
-% %-----------------------------------------------------
-% % EC: Aug 2024--50% additional benefits 2010
-% %-----------------------------------------------------
-% 
-% load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
-% 
-% par=smm.par;
-% eq=smm.eq;
-% 
-% par.iyear=2010; 
-% 
-% 
-% %Modify Parameters
-% 
-% par.chi_b=24; %to match rb_pat_val_sales
-% par.chi=0.072; % To get pat_f_rb
-% par.L_I=0.044; % x_l 
-% par.lambda=0.72; %level of growth
-% par.chi_e=0.01; % level of pat_ent
-% par.alpha_e=0.3; % Relative inv_ent vs pat_ent, also changes with chi_b
-% par.lambda_e=0.46; %q_ent_inc
-% par.nu=0.62; %Increase concentration
-% par.gamma_q=-0.085; %q_10_90
-
-%-----------------------------------------------------
-% EC: Aug 2024--50% additional benefits 2010
-%-----------------------------------------------------
-
-load('sol_ps_1980_1985_ipc3_intq_B_macro_dbase_par_chib_50.mat')
-
+par=smm.par;
+eq=smm.eq;
 
 %Update baseline
 if update_baseline==1
@@ -217,15 +176,28 @@ end
 
 if iyear==1980
     %par.alpha_q=0.085;
-    par.alpha_q=0.077;
+    % par.alpha_q=0.077;
+    % par.alpha_x=0.31;
+
+    %New parameters Oct 2024
+    par.alpha_q=0.081;
+    par.alpha_x=0.315;
+
+    %2digit alphas Oct 2024
+    par.alpha_q=0.08;
     par.alpha_x=0.31;
+
     % %Normalize chi_b=0
     % par.chi_b=0;
 end
 
 
 if iyear==1990
-    par.alpha_q=0.077;
+    % par.alpha_q=0.077;
+    % par.alpha_x=0.3;
+
+    %2digit alphas Oct 2024
+    par.alpha_q=0.08;
     par.alpha_x=0.3;
 
     %Let chi_b change
@@ -233,7 +205,15 @@ if iyear==1990
 end
 
 if iyear==2010
-    par.alpha_q=0.077;
+    % par.alpha_q=0.077;
+    % par.alpha_x=0.31;
+
+    % %New parameters Oct 2024
+    % par.alpha_q=0.078;
+    % par.alpha_x=0.314;
+
+    %2digit alphas Oct 2024
+    par.alpha_q=0.08;
     par.alpha_x=0.31;
 
     %Let chi_b change
@@ -273,7 +253,7 @@ par_str=['_' par_est];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Model str
-str_mod=[str_mod '_dbase']; % '_xrb_rb_xi_lq'; %'_alphas_h_chi_b'; %'_xrb_chib0' ; %'_xrb_lxi_lq'; % '_xrb_lxi_lq'; '_xi'; '_xex' '_xrb_g' '_full'; %'_g'; 
+str_mod=[str_mod '_dbase_2d_alphas']; % '_dbase_rev_alphas' % '_dbase'; % '_xrb_rb_xi_lq'; %'_alphas_h_chi_b'; %'_xrb_chib0' ; %'_xrb_lxi_lq'; % '_xrb_lxi_lq'; '_xi'; '_xex' '_xrb_g' '_full'; %'_g'; 
  
 %Optimization algorithm
 run_alg='ps'; %'f'; %'psw'; %'sa'; % 'gs'; % 'ga'; % 
@@ -306,7 +286,10 @@ if iyear==1980
     par.wmom(13)=0; %No rb_xi_lq
     par.wmom(14)=0; %No rb_inv_pat
     par.wmom(16)=0; %No rb_pat_val_sales_macro
-    par.wmom(17)=1; %50 % target
+
+    if strcmp(par_est,'par_chib_50')
+        par.wmom(17)=1; %50 % target
+    end
 end
 
 %Test function
