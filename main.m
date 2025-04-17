@@ -2,7 +2,7 @@
 % Caicedo-Pearce
 % Internal with scaling and additional benefit
 % Main: Tables and Figures
-% Fall 2024
+% Winter 2025
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Housekeeping
@@ -25,6 +25,8 @@ par.opt.save_tab=0;
 
 %Choose estimation version
 est_str='macro_dbase_2d_alphas';%'macro_dbase_rev_alphas'; %'macro_dbase'
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Loading parameters and moments
@@ -162,7 +164,7 @@ cf_nq_fun_intq_B(smm)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %clc,clear all, close all;
 
-est_str='macro_dbase' ;%'macro_dbase_rev_alphas'; %
+%est_str='macro_dbase' ;%'macro_dbase_rev_alphas'; %
 
 % Load parameters
 load(['sol_ps_1980_1985_ipc3_intq_B_' est_str '_par_chib_50.mat'])
@@ -340,5 +342,61 @@ if run_reg==1
     % bdq_lq=log_dq\X_lq;
 
 end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Entry and Speed-Quality Tradeoff
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Load parameters
+load(['sol_ps_1980_1985_ipc3_intq_B_' est_str '_par_chib0.mat'])
+
+par=smm.par;
+
+%Saving options
+par.opt.save_fig=1;
+
+% %------------------------------
+% % Calibration
+% %------------------------------
+% par.save_str='';
+% 
+% par0=par;
+% 
+% %Run counterfactual
+% cf_ent_xq(par0)
+% 
+% 
+% %------------------------------
+% % Large alpha_e
+% %------------------------------
+% par1=par;
+% par1.save_str='_l_alpha_e';
+% 
+% %Modify parameters
+% par1.alpha_e=1;
+% par1.chi_e=0.18;
+% 
+% %Run counterfactual
+% cf_ent_xq(par1)
+
+%------------------------------
+% Large alpha_q
+%------------------------------
+par2=par;
+par2.save_str='_l_alpha_q';
+
+%Modify parameters
+par2.alpha_q=0.6;
+par2.chi=0.2;
+
+%Run counterfactual
+cf_ent_xq(par2)
+
+
+
+
+
+
 
 
