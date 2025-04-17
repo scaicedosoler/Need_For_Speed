@@ -212,7 +212,7 @@ end
     s=scatter(1:4, [Dx1_0, Dxl1_0, DQ1_0,DV1_0]); s.Marker="diamond"; s.MarkerFaceColor="w"; s.MarkerEdgeColor=par.opt.maroon;
     plot([0,5], [0,0],":k")
     xticks(1:4); xticklabels({'Arrival Rate','Speed', 'Quality','Value'})
-    ylabel('Move $\times$  (Small $\to$ Large) $\times ~I_{2010-2015}$')
+    ylabel('Coefficient $\xi$ of  $I^{move} \times I^{after} \times I^{post}$')
     lgd=legend([s,sd], {'Model','Data'}); lgd.Box="off";
 
 
